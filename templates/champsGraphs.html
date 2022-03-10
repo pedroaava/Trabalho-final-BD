@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <link rel="stylesheet" href="{{ url_for('static',filename='styles/buttonsStyle.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Graficos</title>
+</head>
+<body class="bg-dark">
+    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+        <!-- Navbar Brand-->
+        <i class="navbar-brand ps-3">Banco de Dados 2021.2</i>
+        <!-- Sidebar Toggle-->
+        <div class="col">
+            <a 
+                role="button"  
+                class="link-light btn btn-secondary {% if graph_type == 'partype' %} disabled {% endif %}" 
+                href="http://127.0.0.1:5000/champsGraphs/?graph=partype"
+            >
+                MP
+            </a>
+
+            <a 
+                role="button"  
+                class="link-light btn btn-secondary {% if graph_type == 'info_difficulty' %} disabled {% endif %}" 
+                href="http://127.0.0.1:5000/champsGraphs/?graph=info_difficulty"
+            >
+                difficulty
+            </a>
+
+        </div>        
+    </nav>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0/dist/chartjs-plugin-datalabels.min.js"></script>
+
+    <canvas id="myChart">
+        <script>
+            const ctx = document.getElementById('myChart').getContext('2d');
+            const myChart = new Chart(ctx, {
+                type: 'horizontalBar',
+                data: {
+                    labels: {{labels | safe}},
+                    datasets: [{
+                        {% if graph_type == 'info_difficulty' %}
+                            label: '#',
+                        {% elif graph_type == 'partype' %}
+                            label: '#',
+                        {% endif %}
+                        data: {{data | safe}},
+                        backgroundColor:                            
+                            'gray',
+                            
+                        // borderColor: [
+                        //     'rgba(255, 99, 132, 1)',
+                        //     'rgba(54, 162, 235, 1)',
+                        //     'rgba(255, 206, 86, 1)',
+                        //     'rgba(75, 192, 192, 1)',
+                        //     'rgba(153, 102, 255, 1)',
+                        //     'rgba(255, 159, 64, 1)'
+                        // ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    title: {
+                        fontColor: 'white',
+                        fontSize: 18,
+                        display: true,
+                        
+                        {% if graph_type == 'partype' %}
+                            text: 'MP',
+                        {% endif %}
+
+                        {% if graph_type == 'info_difficulty' %}
+                            text: 'Difficulty',
+                        {% endif %}
+
+                        
+                        
+                    },
+                    hover: {
+                        animationDuration: 0
+                    },
+                    animation: {
+                        duration: 1,
+                        onComplete: function() {
+                            var chartInstance = this.chart,
+                            ctx = chartInstance.ctx;
+            
+                            ctx.font = Chart.helpers.fontString(16, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
+                            //ctx.textAlign = 'center';
+                            ctx.textBaseline = 'bottom';
+
+                            this.data.datasets.forEach(function(dataset, i) {
+                            var meta = chartInstance.controller.getDatasetMeta(i);
+                            meta.data.forEach(function(bar, index) {
+                                var data = dataset.data[index];
+                                ctx.fillText(data, bar._model.x, bar._model.y - 5);
+                            });
+                            });
+                        }
+                    },
+                    
+                    legend: {
+                        display: false
+                    },
+                    scales: {
+                        xAxes: [{
+                            ticks: {
+                                fontColor: 'white',
+                                beginAtZero: true
+                            }
+                        }],
+                        yAxes: [{
+                            ticks: {
+                                fontSize: 18,
+                                fontColor: 'white',
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                },
+                
+                
+            });
+            </script>
+    </canvas>
+</body>
+</html>

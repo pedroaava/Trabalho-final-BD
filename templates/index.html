@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+	<head>
+		<link rel="stylesheet" href="{{ url_for('static',filename='styles/buttonsStyle.css') }}">
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+		<meta charset="utf-8">
+		<title>Trabalho BD 2021.2</title>
+	</head>
+	<body class="bg-dark">
+		<nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+			<!-- Navbar Brand-->
+			<i class="navbar-brand ps-3">Banco de Dados 2021.2</i>
+			<!-- Sidebar Toggle-->
+			<div class="col">
+				<a class="link-light btn btn-secondary" href="http://127.0.0.1:5000/matches">matches</a>
+				<a class="link-light btn btn-secondary" href="http://127.0.0.1:5000/champsGraphs/?graph=partype">graphs</a>
+				<a class="link-light btn btn-secondary" href="http://127.0.0.1:5000/bans">bans</a>
+			</div>
+			<!-- Navbar Search-->
+			<form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+				<div class="input-group">
+					<input style="color:grey" type="search" name="search"/>
+					<button class="btn btn-secondary" id="btnNavbarSearch" type="submit">
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+							<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+						</svg>
+					</button>
+				</div>
+			</form>
+		</nav>
+		
+		<table class="table table-striped table-hover table-dark">
+			<thead>				
+				<th scope="col">Fotinha</th>
+				<th scope="col">Nome</th>
+				<th scope="col">Título</th>
+				<th scope="col">HP base</th>
+				<th scope="col">Range</th>
+				<th scope="col">Bans</th>
+			</thead>
+			<tbody>
+				{% for champ in champs %}
+					<tr>
+						<td><img src={{champ.pictureURL}} width="90" height="90"></td>
+						<th scope="row">{{champ.name_complete}}</th>
+						<td>{{champ.title}}</td>
+						<td>{{champ.stats_hp}}</td>
+						<td>{{champ.stats_attack_range}}</td>
+						<td>{{champ.quant}}</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</body>
+</html>
